@@ -10,6 +10,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn import decomposition
+from sklearn.decomposition import TruncatedSVD
 finallist = []
 def main():
     dbconnect.connect()
@@ -126,7 +127,7 @@ def findimportance(rf,feature_list,finallist):
     features = finallist[filteredfeatures]
     return features
 
-def decomp(features):
+def decompPCA(features):
     pca=decomposition.PCA()
     pca.fit(features) # 用PCA降維
     variances=pca.explained_variance_ #可以理解成該特徵的重要性，數字非常小，即特徵不重要
@@ -141,5 +142,11 @@ def decomp(features):
     new_features=pca.fit_transform(features)
 #    print(new_features)
     return new_features
+def decompSVD(features):
+    svd = TruncatedSVD(n_components=200, n_iter=7, random_state=42)
+    svd.fit(features)
+    new_features=svd.fit_transform(features)
+    return new_features
+
 if __name__ == '__main__':
     main()
