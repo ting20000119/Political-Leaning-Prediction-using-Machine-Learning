@@ -40,7 +40,6 @@ def main():
     finallist = pd.DataFrame (index = list(authorlist),columns= subredditlist)
     finallist = finallist.fillna(0)
     #print(finallist)
-
     #print(df)
 
     for row in df.iterrows() : #each row is a tuple (index num, series)
@@ -53,7 +52,7 @@ def main():
         finallist.loc[currentauthor, currentsubreddit] +=currentscore
         #finallist.loc[currentauthor, 'author'] = currentauthor
         finallist.loc[currentauthor, 'leaning'] = currentleaning
-    finallist.reset_index(drop = True, inplace = True) ##solve could not string convert float
+    finallist.reset_index(drop = True, inplace = True) #solve could not string convert float
     #print(finallist)
     finallist = finallist.drop(columns=['democrats','Republican'])
     features = finallist
@@ -71,7 +70,6 @@ def main():
     pca.fit(features) # 用PCA降維
     variances=pca.explained_variance_ #可以理解成該特徵的重要性，數字非常小，即特徵不重要
     #print(variances)  #列印降維後的新特徵
-    #print("\n")
     thresh=0.01 # 故而可以為重要性設定一個閾值，小於該閾值的認為該特徵不重要，可刪除
     useful_features=variances > thresh
     #print(useful_features) # 標記為True的表示重要特徵，要保留，False則刪除
@@ -81,12 +79,9 @@ def main():
     new_features=pca.fit_transform(features)
     print(new_features)
     #----------------------- 資料降維完畢
-    #X = features
-    #y = labels
     new_features_train, new_features_test, labels_train, labels_test = train_test_split(new_features,labels,test_size=0.2,random_state=101)
     from sklearn.svm import SVC
     model = SVC()
-    #print(type(X_train),type(y_train))
     model.fit(new_features_train,labels_train.ravel())
     predictions = model.predict(new_features_test)
     from sklearn.metrics import classification_report, confusion_matrix
@@ -97,10 +92,8 @@ def main():
     from sklearn.model_selection import GridSearchCV
     param_grid = {'C':[0.1,1,10,100,1000],'gamma':[1,0.1,0.01,0.001,0.0001]}
     grid = GridSearchCV(SVC(),param_grid,verbose=0)
-    #grid.fit(X_train,y_train.ravel())
     grid.fit(new_features_train,labels_train.ravel())
     grid_predictions = grid.predict(new_features_test)
-    #print(grid_predictions)
     print(confusion_matrix(labels_test,grid_predictions))
     print('\n')
     print(classification_report(labels_test,grid_predictions))
