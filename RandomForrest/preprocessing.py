@@ -9,11 +9,11 @@ def getfeaturesmax():
     dbconnect.connect()
     mylist = dbconnect.getdeminfo()
     demdf = pd.DataFrame (mylist,columns=['author','subreddit','score'])
-    demdf["leaning"]=0
+    demdf["leaning"]="dem"
 
     mylist = dbconnect.getrepinfo()
     repdf = pd.DataFrame (mylist,columns=['author','subreddit','score'])
-    repdf["leaning"]=1
+    repdf["leaning"]="rep"
 
     frames = [demdf, repdf]
     df = pd.concat(frames)
@@ -61,11 +61,11 @@ def getfeaturesuser():
     dbconnect.connect()
     mylist = dbconnect.getdeminfo()
     demdf = pd.DataFrame (mylist,columns=['author','subreddit','score'])
-    demdf["leaning"]=1
+    demdf["leaning"]="dem"
 
     mylist = dbconnect.getrepinfo()
     repdf = pd.DataFrame (mylist,columns=['author','subreddit','score'])
-    repdf["leaning"]=0
+    repdf["leaning"]="rep"
 
     frames = [demdf, repdf]
     df = pd.concat(frames)
@@ -90,7 +90,7 @@ def getfeaturesuser():
 #        print(currentsubscriber)
         if currentsubscriber != 0:
             try:
-                finallist.loc[currentauthor, currentsubreddit] += (float(currentscore) / currentsubscriber) * 1000
+                finallist.loc[currentauthor, currentsubreddit] += (float(currentscore) / currentsubscriber) * 100000
             except:
                 print(currentsubreddit, currentsubscriber)
         #finallist.loc[currentauthor, 'author'] = currentauthor
