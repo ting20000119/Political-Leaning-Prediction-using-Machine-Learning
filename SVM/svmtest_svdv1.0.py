@@ -2,7 +2,7 @@ import pandas as pd
 import csv
 import time
 import datetime
-import preprocessing
+import mypreprocessing
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -17,7 +17,7 @@ from sklearn.decomposition import TruncatedSVD
 from scipy.sparse import random as sparse_random
 
 def main():
-    features=preprocessing.getfeaturesuser() #can change to getfeaturesuser
+    features=mypreprocessing.getfeaturesuser() #can change to getfeaturesuser
     labels = np.array(features['leaning'])
     features= features.drop('leaning', axis = 1)
     feature_list = list(features.columns)
