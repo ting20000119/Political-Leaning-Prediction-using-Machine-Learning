@@ -38,6 +38,20 @@ def getfeaturesmax():
         #finallist.loc[currentauthor, 'author'] = currentauthor
         finallist.loc[currentauthor, 'leaning'] = currentleaning
 
+
+    demlist = finallist[(finallist.leaning == '0')]
+    print("dem author count: ",len(demlist.index))
+    replist = finallist[(finallist.leaning == '1')]
+    print("rep author count: ",len(replist.index))
+    print("attempting to balance so that dem/rep have same amount of author...")
+    finallist =pd.concat([replist.head(min(len(replist.index),len(demlist.index))),demlist.head(min(len(replist.index),len(demlist.index)))])
+    demlist = finallist[(finallist.leaning == '0')]
+    print("dem author count: ",len(demlist.index))
+    replist = finallist[(finallist.leaning == '1')]
+    print("rep author count: ",len(replist.index))
+
+    print(finallist)
+
     for column in finallist:
         if column == 'leaning':
             continue
