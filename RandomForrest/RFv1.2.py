@@ -15,7 +15,7 @@ from sklearn.metrics import confusion_matrix
 from sklearn.decomposition import TruncatedSVD
 from sklearn import metrics
 def main():
-    dffeatures = preprocessing.getfeaturesuser()
+    dffeatures = preprocessing.getfeaturesmax()
     features = dffeatures #can change to getfeaturesuser for different normalization technique
     print(features.head())
     ####start learning
@@ -31,7 +31,7 @@ def main():
     decompfeatures = decompSVD(features)
 
     # Split the data into training and testing sets
-    train_features, test_features, train_labels, test_labels = train_test_split(features, labels, test_size = 0.2)
+    train_features, test_features, train_labels, test_labels = train_test_split(features, labels, test_size = 0.2,stratify = labels)
     # Import the model we are using
     # Instantiate model with 1000 decision trees
     test_estimators = [150]
