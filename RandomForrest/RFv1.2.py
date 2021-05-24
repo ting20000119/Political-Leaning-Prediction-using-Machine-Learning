@@ -15,7 +15,8 @@ from sklearn.metrics import confusion_matrix
 from sklearn.decomposition import TruncatedSVD
 from sklearn import metrics
 def main():
-    dffeatures = preprocessing.getfeaturesmax()
+    dffeatures = pd.read_pickle("../activitydata.pkl")
+    #dffeatures = preprocessing.getfeaturesmax()
     features = dffeatures #can change to getfeaturesuser for different normalization technique
     print(features.head())
     ####start learning
