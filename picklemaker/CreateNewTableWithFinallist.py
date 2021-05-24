@@ -60,7 +60,7 @@ def getfinallist():
 #    print(finallist)
     finallist = finallist.drop(columns=['democrats','Republican'])
     print(finallist)
-    finallist.to_pickle("./activitydata.pkl")
+    finallist.to_pickle("../activitydata.pkl")
     dbconnect.disconnect()
 
 '''
