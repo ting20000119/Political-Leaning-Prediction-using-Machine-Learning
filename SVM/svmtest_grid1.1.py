@@ -34,7 +34,9 @@ def adjusted_classes(y_scores, t):
     return [1 if y > t else 0 for y in y_scores]
 
 def main():
-    features=mypreprocessing.getfeaturesmax() #can change to getfeaturesuser
+    features = pd.read_pickle("../activitydata.pkl")
+    features = dffeatures.fillna(0)
+    #features=mypreprocessing.getfeaturesmax() #can change to getfeaturesuser
     labels = np.array(features['leaning'])
     features= features.drop('leaning', axis = 1)
     feature_list = list(features.columns)
