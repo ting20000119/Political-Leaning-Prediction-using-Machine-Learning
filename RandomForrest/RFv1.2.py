@@ -64,7 +64,6 @@ def main():
     # Get numerical feature importances
         findimportance(rf,feature_list,dffeatures)
 
-    dbconnect.disconnect()
 
 def findimportance(rf,feature_list,dffeatures):
 # Get numerical feature importances
