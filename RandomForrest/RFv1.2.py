@@ -13,10 +13,12 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn import decomposition
 from sklearn.metrics import confusion_matrix
 from sklearn.decomposition import TruncatedSVD
+from sklearn.model_selection import KFold
 from sklearn import metrics
 def main():
     dffeatures = pd.read_pickle("../activitydata.pkl")
     dffeatures = dffeatures.fillna(0)
+#    dffeatures = dffeatures.head(1000)
     #dffeatures = preprocessing.getfeaturesmax()
     features = dffeatures #can change to getfeaturesuser for different normalization technique
     print(features.head())
@@ -30,39 +32,50 @@ def main():
     feature_list = list(features.columns)
     # Convert to numpy array
     features = np.array(features)
-    decompfeatures = decompSVD(features)
+    #decompfeatures = decompSVD(features)
+
+    X = features
+    y = labels
+    scores = []
+    cv = KFold(n_splits=10, random_state=42, shuffle=True)
+    for train_index, test_index in cv.split(X):
+        print("Train Index Size: ", len(train_index), "\n")
+        print("Test Index Size: ", len(test_index))
+
+
+        train_features, test_features, train_labels, test_labels = X[train_index], X[test_index], y[train_index], y[test_index]
 
     # Split the data into training and testing sets
-    train_features, test_features, train_labels, test_labels = train_test_split(features, labels, test_size = 0.2,stratify = labels)
-    # Import the model we are using
-    # Instantiate model with 1000 decision trees
-    test_estimators = [150]
-    for estimator in test_estimators:
-        rf = RandomForestClassifier(n_estimators = estimator, random_state = 42)
-    #    RandomForestClassifier.get_params()
-        # Train the model on training data
-        rf.fit(train_features, train_labels);
+        #train_features, test_features, train_labels, test_labels = train_test_split(features, labels, test_size = 0.2,stratify = labels)
+        # Import the model we are using
+        # Instantiate model with 1000 decision trees
+        test_estimators = [150]
+        for estimator in test_estimators:
+            rf = RandomForestClassifier(n_estimators = estimator, random_state = 42)
+        #    RandomForestClassifier.get_params()
+            # Train the model on training data
+            rf.fit(train_features, train_labels);
 
-        # Use the forest's predict method on the test data
+            # Use the forest's predict method on the test data
 
-        predictions = rf.predict(test_features)
-#        predictions = predictions.astype(np.int)
-    #    print(predictions)
-        # Calculate the absolute errors
-    #    test_labels = test_labels.astype(np.int)
-    #    print("test_labels: ", test_labels)
-        AUC(test_labels, predictions)
-        conf_mat = confusion_matrix(test_labels, predictions)
-        print(conf_mat)
-        correct = conf_mat[0][0]+conf_mat[1][1]
-        total = correct + conf_mat[0][1]+conf_mat[1][0]
-        print('accuracy only considering Correct/Incorrect: ',round(correct / total , 4) * 100, '%')
-        #errors = predictions - test_labels
-        #print("errors: ",errors)
-        #correctnum = list(filter(lambda number: number == 0, errors))
-        #print('accuracy only considering Correct/Incorrect: ', round(len(correctnum) / len(errors),4) * 100, '%')
-    # Get numerical feature importances
-        findimportance(rf,feature_list,dffeatures)
+            predictions = rf.predict(test_features)
+    #        predictions = predictions.astype(np.int)
+        #    print(predictions)
+            # Calculate the absolute errors
+        #    test_labels = test_labels.astype(np.int)
+        #    print("test_labels: ", test_labels)
+            AUC(test_labels, predictions)
+            conf_mat = confusion_matrix(test_labels, predictions)
+            print(conf_mat)
+            correct = conf_mat[0][0]+conf_mat[1][1]
+            total = correct + conf_mat[0][1]+conf_mat[1][0]
+            print('accuracy only considering Correct/Incorrect: ',round(correct / total , 4) * 100, '%')
+            #errors = predictions - test_labels
+            #print("errors: ",errors)
+            #correctnum = list(filter(lambda number: number == 0, errors))
+            #print('accuracy only considering Correct/Incorrect: ', round(len(correctnum) / len(errors),4) * 100, '%')
+        # Get numerical feature importances
+            findimportance(rf,feature_list,dffeatures)
 
 
 def findimportance(rf,feature_list,dffeatures):
