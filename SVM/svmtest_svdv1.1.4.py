@@ -73,22 +73,7 @@ def main():
                 pred_adj[i]="dem"
         print(confusion_matrix(labels_test,pred_adj))
         print(classification_report(labels_test,pred_adj))
-    '''for i in np.arange(0.0,1.0,0.01):
-        print(i)
-        y_pred_adj = adjusted_classes(y_scores,i)
-        pred_adj=np.array(y_pred_adj)
-        pred_adj = pred_adj.tolist()
-        for i in range(len(pred_adj)):
-            pred_adj[i]=str(pred_adj[i])
-    #print("label:")
-    #print(labels_test)
-        print(confusion_matrix(labels_test,pred_adj))
-        print(classification_report(labels_test,pred_adj))'''
-    '''print(confusion_matrix(labels_test,predictions)) #Confusion matrix whose i-th row and j-th column entry indicates the number of samples with true label being i-th class and predicted label being j-th class.
-    print('\n')
-    print(classification_report(labels_test,predictions))
-    print('\n')'''
-    #-----------------Auc
+   
     
 
     
