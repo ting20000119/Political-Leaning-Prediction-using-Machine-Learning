@@ -40,7 +40,7 @@ def getdeletedsubreddits():
 def getdeminfo():
     cur = conn.cursor()
     insert_stmt = (
-        "SELECT author,subreddit,score from demactivity"
+        "SELECT author,subreddit,score from demactivity2020"
         )
     cur.execute(insert_stmt)
     result = cur.fetchall()
@@ -50,7 +50,7 @@ def getdeminfo():
 def getrepinfo():
     cur = conn.cursor()
     insert_stmt = (
-        "SELECT author,subreddit,score from repactivity"
+        "SELECT author,subreddit,score from repactivity2020"
         )
     cur.execute(insert_stmt)
     result = cur.fetchall()
