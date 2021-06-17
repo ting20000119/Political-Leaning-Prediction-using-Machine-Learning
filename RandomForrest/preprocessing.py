@@ -27,6 +27,7 @@ def getfeaturesmax():
     finallist = pd.DataFrame (index = list(authorlist),columns= subredditlist)
     finallist = finallist.fillna(0)
 
+    scorelist = finallist
     for row in tqdm(df.iterrows()): #each row is a tuple (index num, series)
         currentauthor = str(row[1]['author'])
         currentsubreddit = str(row[1]['subreddit'])
@@ -34,9 +35,31 @@ def getfeaturesmax():
         currentscore = row[1]['score']
         #print(currentauthor)
         #print(currentsubreddit)
-        finallist.loc[currentauthor, currentsubreddit] += float(currentscore)
+        scorelist.loc[currentauthor, currentsubreddit] += float(currentscore)
         #finallist.loc[currentauthor, 'author'] = currentauthor
-        finallist.loc[currentauthor, 'leaning'] = currentleaning
+        scorelist.loc[currentauthor, 'leaning'] = currentleaning
+    
+    participationlist = finallist
+    for row in tqdm(df.iterrows()): #each row is a tuple (index num, series)
+        currentauthor = str(row[1]['author'])
+        currentsubreddit = str(row[1]['subreddit'])
+        currentleaning = str(row[1]['leaning'])
+        currentscore = row[1]['score']
+        #print(currentauthor)
+        #print(currentsubreddit)
+        participationlist.loc[currentauthor, currentsubreddit] += 1
+        #finallist.loc[currentauthor, 'author'] = currentauthor
+        participationlist.loc[currentauthor, 'leaning'] = currentleaning
+
+    participationlist = participationlist.drop(columns=['leaning'])
+    for subreddit_name in subredditlist:
+        participationlist.rename(columns = {subreddit_name: subreddit_name + '_participation'}, inplace = True)
+   #print(participationlist)
+
+
+    finallist = pd.concat([scorelist,participationlist])
+    print("participation and score merged! ")
+    
 
     demlist = finallist[(finallist.leaning == 'dem')]
     print("dem author count: ",len(demlist.index))
@@ -63,6 +86,7 @@ def getfeaturesmax():
     finallist.reset_index(drop = True, inplace = True)
 #    print(finallist['politics'])
 #    print(finallist)
+
     finallist = finallist.drop(columns=['democrats','Republican'])
     dbconnect.disconnect()
     return finallist

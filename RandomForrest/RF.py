@@ -16,8 +16,11 @@ from sklearn.decomposition import TruncatedSVD
 from sklearn.model_selection import KFold
 from sklearn import metrics
 def main():
-    dffeatures = pd.read_pickle("../activitydata2020.pkl")
+
+    #dffeatures = pd.read_pickle("../activitydata2020.pkl")
+    dffeatures = preprocessing.getfeaturesmax()
     dffeatures = dffeatures.fillna(0)
+    print(dffeatures)
     #dffeatures = dffeatures.head(2)
     #dffeatures = preprocessing.getfeaturesmax()
     features = dffeatures #can change to getfeaturesuser for different normalization technique
@@ -35,8 +38,8 @@ def main():
                     #print (features[name])                          
                     sum+=1                        
     #print(sum)
-    sum = sum / features.shape[0]
-    print(sum)    
+    user_average = sum / features.shape[0]
+    print("On Average, every user has been on: ",user_average,"subreddits")    
     #print(type(features))
     ####start learning
     # Labels are the values we want to predict
@@ -53,7 +56,7 @@ def main():
     X = features
     y = labels
     scores = []
-    cv = KFold(n_splits=10, random_state=42, shuffle=True)
+    cv = KFold(n_splits=5, random_state=42, shuffle=True)
     for train_index, test_index in cv.split(X):
         print("Train Index Size: ", len(train_index), "\n")
         print("Test Index Size: ", len(test_index))
@@ -65,12 +68,12 @@ def main():
         #train_features, test_features, train_labels, test_labels = train_test_split(features, labels, test_size = 0.2,stratify = labels)
         # Import the model we are using
         # Instantiate model with 1000 decision trees
-        test_estimators = [150]
+        test_estimators = [1000]
         for estimator in test_estimators:
             rf = RandomForestClassifier(n_estimators = estimator, random_state = 42)
         #    RandomForestClassifier.get_params()
             # Train the model on training data
-            rf.fit(train_features, train_labels);
+            rf.fit(train_features, train_labels)
 
             # Use the forest's predict method on the test data
 

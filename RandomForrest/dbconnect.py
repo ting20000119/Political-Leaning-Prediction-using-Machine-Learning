@@ -38,28 +38,25 @@ def getdeletedsubreddits():
     return result
 
 def getdeminfo():
+    print("collecting dem info")
     cur = conn.cursor()
     insert_stmt = (
-        "SELECT author,subreddit,score from testdemminusrep where (epoch > 1577883600) LIMIT 10000"
+        "SELECT author,subreddit,score from demactivity2020 where (epoch > 1577883600)"
         )
     cur.execute(insert_stmt)
     result = cur.fetchall()
     cur.close()
+    print("dem info collected")
     return result
 
 def getrepinfo():
+    print("collecting rep info")
     cur = conn.cursor()
     insert_stmt = (
-        "SELECT author,subreddit,score from testrepminusdem where (epoch > 1577883600) LIMIT 10000"
+        "SELECT author,subreddit,score from repactivity2020 where (epoch > 1577883600)"
         )
     cur.execute(insert_stmt)
     result = cur.fetchall()
     cur.close()
+    print("rep info collected")
     return result
-
-def main():
-    connect()
-    insertdb('key5','testtitle', 'http://testurl', 'testauthor', 10, datetime.date(2012, 3, 23), '123456',11,'testperm','testflair')
-    disconnect()
-if __name__ == '__main__':
-    main()
