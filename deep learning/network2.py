@@ -37,7 +37,6 @@ def main():
     svd = TruncatedSVD(n_components=1000, n_iter=7, random_state=42)
     svd.fit(features)
     new_features = svd.transform(features)
-    new_features = features
     #----------------------- 資料降維完畢
 #    new_features_train, new_features_test, labels_train, labels_test = train_test_split(new_features,labels,test_size=0.2,random_state=101,stratify =labels)
     # ----------- Do SVM
